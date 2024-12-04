@@ -53,12 +53,12 @@ class Customers(Person):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def find_client(self, caminho: str) -> str:
+    def find_client(self, file_path: str) -> str:
         cpf_name: str = input('\nDigite CPF ou Nome cliente: ')
         cpf_name = cpf_name.replace('.', '').replace('-', '')
 
         try:
-            with open(caminho, mode="r", encoding='utf8') as file:
+            with open(file_path, mode="r", encoding='utf8') as file:
                 reader = csv.reader(file)
         
                 for row in reader:
@@ -70,9 +70,9 @@ class Customers(Person):
         except FileNotFoundError:
             print("\nNenhum cliente cadastrado.\n")
 
-    def paid_customer(self, caminho: str) -> str:
+    def paid_customer(self, file_path: str) -> str:
         try:
-            with open(caminho, mode="r", encoding='utf8') as file:
+            with open(file_path, mode="r", encoding='utf8') as file:
                 reader = csv.reader(file)
                 num = 0
                 for row in reader:
@@ -85,9 +85,9 @@ class Customers(Person):
         except FileNotFoundError:
             print("\nNenhum cliente cadastrado.\n")
 
-    def no_paid_customer(self, caminho: str) -> str:
+    def no_paid_customer(self, file_path: str) -> str:
         try:
-            with open(caminho, mode="r", encoding='utf8') as file:
+            with open(file_path, mode="r", encoding='utf8') as file:
                 reader = csv.reader(file)
                 num = 0
                 for row in reader:
@@ -99,9 +99,9 @@ class Customers(Person):
         except FileNotFoundError:
             print("\nNenhum cliente cadastrado.\n")
 
-    def number_customers(self, caminho: str) -> str:
+    def number_customers(self, file_path: str) -> str:
         try:
-            with open(caminho, mode="r", encoding='utf8') as file:
+            with open(file_path, mode="r", encoding='utf8') as file:
                 reader = csv.reader(file)
 
                 for i, row in enumerate(reader):
@@ -112,7 +112,7 @@ class Customers(Person):
         except FileNotFoundError:
             print("\nNenhum cliente cadastrado.\n")
 
-    def delete_customers(self, caminho: str, caminho_removidos: str) -> str:
+    def delete_customers(self, file_path: str, removed_file_path: str) -> str:
         cpf_customer: str = input('Digite CPF do cliente: ')
         cpf_customer = cpf_customer.replace('.', '').replace('-', '')
             
@@ -120,7 +120,7 @@ class Customers(Person):
         removed = []
 
         try:
-            with open(caminho, mode="r", encoding='utf8') as file:
+            with open(file_path, mode="r", encoding='utf8') as file:
                 reader = csv.reader(file)
                 #reader = list(reader)
 
@@ -132,7 +132,7 @@ class Customers(Person):
                         
                         if delete in 's':
                             removed.append(row)
-                            with open(caminho_removidos, mode="a", encoding='utf8', newline="") as file:
+                            with open(removed_file_path, mode="a", encoding='utf8', newline="") as file:
                                     writer = csv.writer(file)
                                     writer.writerows(removed)
                                                 
@@ -142,7 +142,7 @@ class Customers(Person):
 
                     customers.append(row) 
 
-                    with open(caminho, mode="w", encoding='utf8', newline="") as file:
+                    with open(file_path, mode="w", encoding='utf8', newline="") as file:
                         writer = csv.writer(file)
                         writer.writerows(customers)
 
