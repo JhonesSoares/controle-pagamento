@@ -48,7 +48,7 @@ class Validation:
                         reader = csv.reader(file)
                         
                         for row in reader:
-                            if row[1] == cpf:  # O CPF está na coluna 1 (índice 1)
+                            if row[1] == CPF:  # O CPF está na coluna 1 (índice 1)
                                 print('\nCPF já tem cadastrado.')
                                 return False
                     return True

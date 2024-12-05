@@ -28,9 +28,7 @@ class Payment:
                 with open(file_path, mode="w", encoding='utf8', newline="") as file:
                     writer = csv.writer(file)
                     writer.writerows(customers)
-
                 print("Pagamento registrado com sucesso!\n")
-            
             else:
                 print("\nCliente não encontrado.\n")
 
