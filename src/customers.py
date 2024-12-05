@@ -2,6 +2,7 @@ from abc import ABC
 from dataclasses import dataclass
 import csv
 from pathlib import Path
+from validation import Validation
 
 
 
@@ -14,10 +15,10 @@ class Person(ABC):
     __status: str = 'NÃO PAGO'
 
     @property
-    def set_cpf(self):
+    def set_name(self):
         return self.__name
-    @set_cpf.setter
-    def set_cpf(self, value):
+    @set_name.setter
+    def set_name(self, value):
         self.__name = value
 
     @property
@@ -45,13 +46,34 @@ class Person(ABC):
     def set_status(self):
         return self.__status
     @set_status.setter
-    def set_email(self, value):
+    def set_status(self, value):
         self.__status = value
 
 
 class Customers(Person):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def register_customers(self, file_path: str) -> None:
+        validation = Validation()
+
+        self.set_name: str = input('Nome: ')
+        
+        self.set_cpf: str = input('CPF: ')
+        if validation.validate_cpf(self.set_cpf, file_path) == False: return self.register_customers(file_path)
+
+        self.set_phone: str = input('Telefone: ')
+        if validation.validate_phone(self.set_phone) == False: return self.register_customers(file_path)
+
+        self.set_email: str = input('Email: ')
+        if validation.validate_email(self.set_email) == False: return self.register_customers(file_path)
+
+        self.set_status: str = 'NÃO PAGO'
+
+        with open(file_path, mode="a", encoding="utf8", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow([self.set_name, self.set_cpf, self.set_phone, self.set_email, self.set_status])
+            print("\nCliente cadastrado com sucesso!")
 
     def find_client(self, file_path: str) -> str:
         cpf_name: str = input('\nDigite CPF ou Nome cliente: ')
@@ -62,7 +84,6 @@ class Customers(Person):
                 reader = csv.reader(file)
         
                 for row in reader:
-                    
                     if row[0].lower() in cpf_name.lower() or row[1] == cpf_name:
                         print(f"\nNome: {row[0]}, CPF: {row[1]}, Telefone: {row[2]}, Email: {row[3]}, Status: {row[4]}\n")
                         return
@@ -161,4 +182,5 @@ if __name__ == '__main__':
 
     cliente = Customers('', '', '', '')  
     #cliente.set_cpf = 'marias'
-    #cliente.find_client(CAMINHO_CSV)
+    cliente.register_customers(CAMINHO_CSV)
+    print(cliente.__dict__)
